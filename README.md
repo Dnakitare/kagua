@@ -117,6 +117,10 @@ Even at this fidelity, the composition check works: group the calls into one tas
 
 Plain OTel GenAI data is authority-blind. If your instrumentation emits the `kagua.*` span attributes (`kagua.warrant_id`, `kagua.delegation.subject`, `kagua.args_digest`, ...), the adapter recovers full authority semantics; Datadog ignores them and nothing breaks.
 
+### Does the adapter survive *your* export?
+
+Honestly: unknown. It's validated against one real dialect (OpenLLMetry + LangChain). OpenInference, Langfuse, LangSmith, and gateway log formats are untested, and that's the part no one can validate alone. If you have real traces, [the trace zoo](https://github.com/Dnakitare/kagua/issues/1) wants them: run `kagua ingest` on your export, paste the loss report, and if it breaks or lies, attach a sanitized export (`python3 tools/sanitize_export.py your-export.json` strips prompts, completions, and arguments while keeping the structure). Broken formats get fixed same week and become named regression fixtures.
+
 ## CI
 
 ```yaml
