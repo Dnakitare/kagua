@@ -6,8 +6,8 @@ Blockers before the README goes public (per HANDOFF.md). Sweep run 2026-07-03.
 - [x] **Prior-art check on framing language** — clear with one citation obligation, folded into the README's Related work section. Findings below.
 - [x] **PyPI name availability** — `kagua` is free (pypi.org/pypi/kagua returns 404). npm `kagua` also free. Claim PyPI at first release; don't squat npm.
 - [x] **README screenshot** — README now leads with `docs/demo.svg`, generated from live output by `tools/render_demo_svg.py` (rerun it whenever demo output changes; it refuses to render a passing demo).
-- [ ] **Repo public on github.com/Dnakitare** — Daniel's call. Personal git identity confirmed on all commits (dnakitare@gmail.com).
-- [ ] **Claim PyPI name** at first `pip install kagua` release (publish 0.1.0, don't placeholder-squat).
+- [x] **Repo public on github.com/Dnakitare** — live 2026-07-03. Personal git identity on all commits (dnakitare@gmail.com).
+- [x] **PyPI name claimed** — kagua 0.1.0 published 2026-07-03 via Trusted Publishing (OIDC): GitHub Release triggers `.github/workflows/release.yml`, environment `pypi`. No tokens stored anywhere. To release: bump version in pyproject.toml, tag, `gh release create`.
 
 ## Name sweep findings (2026-07-03)
 
