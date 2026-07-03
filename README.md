@@ -132,7 +132,7 @@ jobs:
           fail-on: any
 ```
 
-A prompt edit or tool-wiring change that widens effective authority turns the PR red with a Scope-family witness before it deploys. `fixtures/scope-drift/` is a worked example: one delegation drifts to include `payments.approve` and the check fails on the exact granting event.
+A prompt edit or tool-wiring change that widens effective authority turns the PR red with a Scope-family witness before it deploys. [kagua-demo](https://github.com/Dnakitare/kagua-demo) is the live version: a one-line PR gives the procurement agent `payments.approve` and CI fails on the exact granting event, plus the composition it enables. `fixtures/scope-drift/` is the same story as a local fixture.
 
 ## What Kagua is not
 
