@@ -1,0 +1,40 @@
+name: 'Kagua Check'
+description: 'Verify an agent trace against a declared authority envelope. Fails the build when the composition of actions exceeds what any principal authorized.'
+branding:
+  icon: 'shield'
+  color: 'gray-dark'
+
+inputs:
+  trace:
+    description: 'Path to a canonical JSONL trace, or a directory containing trace.jsonl and envelope.yaml'
+    required: true
+  envelope:
+    description: 'Path to the authority envelope YAML (optional when trace is a directory containing envelope.yaml)'
+    required: false
+    default: ''
+  fail-on:
+    description: 'Comma-separated check families that fail the build (any, lifetime, scope, principal, composition)'
+    required: false
+    default: 'any'
+  python-version:
+    description: 'Python version to run with'
+    required: false
+    default: '3.12'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install kagua
+      shell: bash
+      run: pip install --quiet "${{ github.action_path }}"
+    - name: Run kagua check
+      shell: bash
+      run: |
+        ARGS=(check "${{ inputs.trace }}" --fail-on "${{ inputs.fail-on }}" --color always)
+        if [ -n "${{ inputs.envelope }}" ]; then
+          ARGS+=(--envelope "${{ inputs.envelope }}")
+        fi
+        kagua "${ARGS[@]}"

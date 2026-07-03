@@ -1,0 +1,52 @@
+# Authority envelope for the Castellan work-order demo.
+# Three agents, one human root principal. Every scope below is exactly what
+# the trace exercises: no individual call ever exceeds it.
+principals:
+  - id: human:ops.manager
+    root: true
+
+agents:
+  - id: agent:coordinator
+    delegated_by: human:ops.manager
+    scope:
+      tools:
+        - workorders.*
+        - vendors.*
+        - invoices.read
+        - payments.approve
+        - email.send
+        - slack.post:channel=ops
+    lifetime: task
+    max_delegation_depth: 1
+
+  - id: agent:procurement
+    delegated_by: agent:coordinator
+    scope:
+      tools:
+        - workorders.read
+        - workorders.update
+        - vendors.search
+        - vendors.read
+        - vendors.get_quote
+        - email.send
+    lifetime: task
+    max_delegation_depth: 2
+
+  - id: agent:finance
+    delegated_by: agent:coordinator
+    scope:
+      tools:
+        - workorders.read
+        - workorders.update
+        - invoices.read
+        - payments.approve
+    lifetime: task
+    max_delegation_depth: 2
+
+invariants:
+  # Solicit-then-self-approve: the same task must never both collect vendor
+  # quotes and approve the payment. Each call is individually in scope for
+  # its agent; composed, they launder away the human approval step.
+  - kind: forbidden_composition
+    sequence: [vendors.get_quote, payments.approve]
+    within: task
