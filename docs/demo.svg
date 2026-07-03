@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1077" height="396" viewBox="0 0 1077 396" role="img" aria-label="kagua check failing the work-order demo on a Composition violation">
+<rect width="1077" height="396" rx="10" fill="#161b22"/>
+<rect width="1077" height="36" rx="10" fill="#21262d"/>
+<rect y="26" width="1077" height="10" fill="#21262d"/>
+<circle cx="20" cy="18" r="6" fill="#ff5f57"/>
+<circle cx="40" cy="18" r="6" fill="#febc2e"/>
+<circle cx="60" cy="18" r="6" fill="#28c840"/>
+<text x="538" y="22" text-anchor="middle" fill="#8b949e" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12">kagua check</text>
+<text x="20" y="56" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#3fb950">$</tspan><tspan fill="#e6edf3"> kagua check fixtures/workorder/</tspan></text>
+<text x="20" y="96" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#f85149" font-weight="bold">FAIL  Composition / forbidden_composition</tspan></text>
+<text x="20" y="116" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#e6edf3">  forbidden sequence [vendors.get_quote -&gt; payments.approve] completed within t_workorder_442; every call was individually authorized</tspan></text>
+<text x="20" y="136" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#e6edf3">  witness (6 events):</tspan></text>
+<text x="20" y="156" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#e6edf3">    e01    task_start   t_workorder_442  - WO-442: HVAC failure, Site 12</tspan></text>
+<text x="20" y="176" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#e6edf3">    e03    delegation   human:ops.manager -&gt; agent:coordinator  [w_coord]  scope=6 tools  - root grant to coordinator</tspan></text>
+<text x="20" y="196" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#e6edf3">    e08    delegation   agent:coordinator -&gt; agent:procurement  [w_proc]  scope=6 tools  - sub-delegate quote collection</tspan></text>
+<text x="20" y="216" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#e6edf3">    e13    tool_call    agent:procurement  vendors.get_quote  [w_proc]  - quote from acme-hvac: $8,400   &lt;- forbidden[0]</tspan></text>
+<text x="20" y="236" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#e6edf3">    e28    delegation   agent:coordinator -&gt; agent:finance  [w_fin]  scope=4 tools  - sub-delegate payment processing</tspan></text>
+<text x="20" y="256" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#e6edf3">    e33    tool_call    agent:finance      payments.approve  [w_fin]  - approve $8,400 to acme-hvac   &lt;- forbidden[1]</tspan></text>
+<text x="20" y="276" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#e6edf3">  </tspan><tspan fill="#8b949e">every event above passed its own Lifetime/Scope/Principal check; the composition is the violation</tspan></text>
+<text x="20" y="316" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#e6edf3">coverage: </tspan><tspan fill="#e6edf3" font-weight="bold">QUALIFIED</tspan><tspan fill="#e6edf3"> - no enforcement point declared for this trace</tspan></text>
+<text x="20" y="336" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#e6edf3">families: Lifetime ok  |  Scope ok  |  Principal ok  |  Provenance n/a  |  Composition partial  |  Trajectory n/a</tspan></text>
+<text x="20" y="356" xml:space="preserve" font-family="SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13"><tspan fill="#f85149" font-weight="bold">verdict: FAIL (1 finding)</tspan></text>
+</svg>

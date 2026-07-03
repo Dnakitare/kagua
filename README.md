@@ -4,6 +4,11 @@
 
 Kagua replays multi-agent traces against a declared authority envelope and fails the build when the *composition* of actions exceeds what any principal authorized, even though every individual call passed its own check.
 
+![kagua check failing the work-order demo on a Composition violation](docs/demo.svg)
+
+<details>
+<summary>Same output as text</summary>
+
 ```
 $ kagua check fixtures/workorder/
 
@@ -22,6 +27,8 @@ coverage: QUALIFIED - no enforcement point declared for this trace
 families: Lifetime ok  |  Scope ok  |  Principal ok  |  Provenance n/a  |  Composition partial  |  Trajectory n/a
 verdict: FAIL (1 finding)
 ```
+
+</details>
 
 Read that trace again. The coordinator was granted exactly what the envelope declares. Both sub-delegations narrowed scope. Every tool call sat inside its warrant. A per-call policy engine says yes 40 times. And the task still solicited vendor quotes and approved the payment to the winner with no human in between. That gap, agents composing past checks that each pass individually, is what Kagua exists to catch.
 
@@ -125,6 +132,16 @@ A prompt edit or tool-wiring change that widens effective authority turns the PR
 - Not an eval framework. It never scores answer quality.
 - Not a gateway. It never sits in the request path.
 - Not an anomaly detector. If a check can't produce a replayable witness, it doesn't ship.
+
+## Related work
+
+The problem is getting named from several directions at once; none of these ship this artifact, and each is worth reading:
+
+- [Authenticated Delegation and Authorized AI Agents](https://arxiv.org/abs/2501.09674) (MIT Media Lab, 2025) makes the case for verifiable delegation chains. Kagua is the check layer such chains deserve; [Muhuri](https://github.com/Dnakitare/muhuri) is our signed-credential half of that story.
+- [Closure Gaps and Delegation Envelopes for Open-World AI Agents](https://arxiv.org/abs/2604.25000) (2026) formalizes delegation envelopes. Kagua's envelope YAML is a practical, git-diffable instance of the same idea, and we take the term from that lineage rather than claiming it.
+- [Authorization Propagation in Multi-Agent AI Systems](https://arxiv.org/abs/2605.05440) (2026) derives requirements for workflow-level authorization, including task-scoped envelopes and aggregation bounds, and notes the field has "not yet converged on a complete architecture". Kagua is a working verifier for the post-hoc slice of those requirements.
+- [Runtime Compliance Verification for AI Agents](https://arxiv.org/abs/2606.19242) (2026) intercepts tool calls at runtime. That's enforcement, the layer we deliberately don't sit in; Kagua verifies after the fact and stays out of the request path.
+- Cedar and OPA decide per-call policy. Complementary, as covered above.
 
 ## Roadmap
 
