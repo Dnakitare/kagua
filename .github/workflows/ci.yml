@@ -31,8 +31,9 @@ jobs:
       - name: kagua check must exit 1 on the workorder fixture
         run: |
           set +e
-          kagua check fixtures/workorder/ --color never | tee /tmp/out.txt
+          kagua check fixtures/workorder/ --color never > /tmp/out.txt
           rc=$?
           set -e
+          cat /tmp/out.txt
           test "$rc" -eq 1
           grep -q "Composition / forbidden_composition" /tmp/out.txt
