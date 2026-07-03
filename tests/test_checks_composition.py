@@ -68,6 +68,38 @@ def test_unsupported_invariant_kinds_are_returned_not_dropped(env):
     assert [i.kind for i in unchecked] == ["budget"]
 
 
+def test_concurrent_within_tolerance_still_matches_with_caveat(env):
+    # two forbidden calls 2s apart, no causal link: co-occurrence must fire,
+    # with the ordering marked ambiguous (regression: tolerance suppressed this)
+    events = [
+        ev("e1", "task_start", offset_s=0),
+        delegation("e2", issuer="human:root", subject="agent:a", warrant="w1",
+                    tools=["jira.*", "email.send"], offset_s=1, parent="e1"),
+        ev("e3", "tool_call", actor="agent:a", tool="jira.read", warrant="w1", offset_s=10),
+        ev("e4", "tool_call", actor="agent:a", tool="email.send", warrant="w1", offset_s=12),
+    ]
+    findings, _ = composition.check(Trace(events), env)
+    assert len(findings) == 1
+    assert findings[0].details["ordering"] == ["concurrent-within-tolerance"]
+    assert "co-occurrence" in findings[0].message
+
+
+def test_causal_contradiction_blocks_match(env):
+    # email.send is the causal ANCESTOR of jira.read but its clock reads later:
+    # causality wins, the sequence [jira.read -> email.send] must not match
+    events = [
+        ev("e1", "task_start", offset_s=0),
+        delegation("e2", issuer="human:root", subject="agent:a", warrant="w1",
+                    tools=["jira.*", "email.send"], offset_s=1, parent="e1"),
+        ev("e3", "tool_call", actor="agent:a", tool="email.send", warrant="w1",
+           offset_s=100, parent="e2"),  # skewed clock: reads later
+        ev("e4", "tool_call", actor="agent:a", tool="jira.read", warrant="w1",
+           offset_s=50, parent="e3"),   # causal child of e3, earlier clock
+    ]
+    findings, _ = composition.check(Trace(events), env)
+    assert findings == []
+
+
 def test_pattern_matching_in_sequence(env):
     env.invariants = [
         Invariant(kind="forbidden_composition",

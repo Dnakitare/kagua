@@ -15,6 +15,7 @@ what could not be recovered and which check families that disables.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from dataclasses import dataclass, field
@@ -31,8 +32,11 @@ class LossReport:
     tool_calls: int = 0
     tool_calls_with_warrant: int = 0
     tool_calls_with_args_digest: int = 0
+    args_digests_derived: int = 0  # hashed here from plaintext args, not attested by source
     delegation_records: int = 0
-    task_boundaries: int = 0  # synthesized: none; recovered: count
+    distinct_tasks: int = 0
+    task_id_forced: str | None = None
+    actor_from_service_name: int = 0
 
     def skip(self, reason: str) -> None:
         self.skipped[reason] = self.skipped.get(reason, 0) + 1
@@ -45,7 +49,11 @@ class LossReport:
             "tool_calls": self.tool_calls,
             "tool_calls_with_warrant": self.tool_calls_with_warrant,
             "tool_calls_with_args_digest": self.tool_calls_with_args_digest,
+            "args_digests_derived": self.args_digests_derived,
             "delegation_records": self.delegation_records,
+            "distinct_tasks": self.distinct_tasks,
+            "task_id_forced": self.task_id_forced,
+            "actor_from_service_name": self.actor_from_service_name,
         }
 
     def render_text(self) -> str:
@@ -55,10 +63,12 @@ class LossReport:
         ]
         for reason, n in sorted(self.skipped.items()):
             out.append(f"  skipped {n}: {reason}")
+        digests = f"{self.tool_calls_with_args_digest}/{self.tool_calls} args digests"
+        if self.args_digests_derived:
+            digests += f" ({self.args_digests_derived} derived here from plaintext args, not attested by source)"
         out.append(
             f"recovered: {self.tool_calls_with_warrant}/{self.tool_calls} warrants,"
-            f" {self.delegation_records} delegation records,"
-            f" {self.tool_calls_with_args_digest}/{self.tool_calls} args digests"
+            f" {self.delegation_records} delegation records, {digests}"
         )
         full_authority = (
             self.delegation_records > 0
@@ -91,6 +101,27 @@ class LossReport:
                     " unverifiable for Lifetime/Principal"
                 )
             out.append("  Provenance  - not implemented until v0.2 (Muhuri-signed hops)")
+        if self.actor_from_service_name:
+            out.append("")
+            out.append(
+                f"actor identity: {self.actor_from_service_name} of {self.events_emitted} events"
+                " have no per-agent identity (no gen_ai.agent.name); actor fell back to the"
+                " service.name resource attribute, which cannot distinguish agents sharing a process."
+            )
+        if self.task_id_forced is not None:
+            out.append("")
+            out.append(
+                f"task grouping: all events forced into task '{self.task_id_forced}' via --task."
+                " That grouping is your assertion, not the trace's; the verdict inherits it."
+            )
+        elif self.events_emitted > 1 and self.distinct_tasks == self.events_emitted:
+            out.append("")
+            out.append(
+                f"task grouping: {self.events_emitted} events landed in {self.distinct_tasks}"
+                " disjoint traces with no shared root span. Within-task checks (composition,"
+                " lifetime) cannot correlate any of them. If these belong to one logical task,"
+                " wrap the run in a workflow/root span or re-ingest with --task <id>."
+            )
         out.append("")
         out.append(
             "verdicts over this trace will be QUALIFIED: findings are real, but a pass"
@@ -155,9 +186,10 @@ def _scope_tools(value) -> list[str]:
     return []
 
 
-def ingest(path: str, out_path: str) -> LossReport:
+def ingest(path: str, out_path: str, task_override: str | None = None) -> LossReport:
     docs = _load_docs(path)
     report = LossReport()
+    report.task_id_forced = task_override
 
     spans: list[tuple[dict, dict]] = []  # (span, resource_attrs)
     for doc in docs:
@@ -192,6 +224,11 @@ def ingest(path: str, out_path: str) -> LossReport:
         is_delegation = "kagua.delegation.subject" in attrs and "kagua.warrant_id" in attrs
         is_tool = op == "execute_tool" or "gen_ai.tool.name" in attrs
 
+        def task_id() -> str:
+            if task_override is not None:
+                return task_override
+            return attrs.get("kagua.task_id") or f"trace:{span['traceId']}"
+
         if is_delegation:
             ev = {
                 "event_id": span["spanId"],
@@ -206,19 +243,22 @@ def ingest(path: str, out_path: str) -> LossReport:
                 "parent_warrant": attrs.get("kagua.delegation.parent_warrant"),
                 "scope": {"tools": _scope_tools(attrs.get("kagua.delegation.scope"))},
                 "lifetime": attrs.get("kagua.delegation.lifetime", "task"),
-                "task": attrs.get("kagua.task_id") or f"trace:{span['traceId']}",
+                "task": task_id(),
             }
             report.delegation_records += 1
         elif is_tool:
+            actor = attrs.get("kagua.actor") or attrs.get("gen_ai.agent.name")
+            if actor is None:
+                actor = res_attrs.get("service.name")
+                if actor is not None:
+                    report.actor_from_service_name += 1
             ev = {
                 "event_id": span["spanId"],
                 "ts": _ts(span.get("startTimeUnixNano", 0)),
                 "kind": "tool_call",
-                "actor": attrs.get("kagua.actor")
-                or attrs.get("gen_ai.agent.name")
-                or res_attrs.get("service.name"),
+                "actor": actor,
                 "tool": attrs.get("gen_ai.tool.name") or span.get("name"),
-                "task": attrs.get("kagua.task_id") or f"trace:{span['traceId']}",
+                "task": task_id(),
             }
             if attrs.get("kagua.warrant_id"):
                 ev["warrant"] = attrs["kagua.warrant_id"]
@@ -226,6 +266,19 @@ def ingest(path: str, out_path: str) -> LossReport:
             if attrs.get("kagua.args_digest"):
                 ev["args_digest"] = attrs["kagua.args_digest"]
                 report.tool_calls_with_args_digest += 1
+            else:
+                # OpenLLMetry and semconv-conformant instrumentations carry the
+                # call arguments in plaintext; hash them here so retries and
+                # witnesses have argument identity. Derived, not attested:
+                # the source never vouched for this digest, and the report says so.
+                plain_args = attrs.get("gen_ai.tool.call.arguments") or attrs.get(
+                    "traceloop.entity.input"
+                )
+                if plain_args is not None:
+                    digest = hashlib.sha256(str(plain_args).encode("utf-8")).hexdigest()
+                    ev["args_digest"] = f"sha256:{digest}"
+                    report.tool_calls_with_args_digest += 1
+                    report.args_digests_derived += 1
             if attrs.get("kagua.idempotency_key"):
                 ev["idempotency_key"] = attrs["kagua.idempotency_key"]
             report.tool_calls += 1
@@ -246,6 +299,7 @@ def ingest(path: str, out_path: str) -> LossReport:
         emitted_ids.add(span["spanId"])
 
     report.events_emitted = len(events)
+    report.distinct_tasks = len({ev["task"] for ev in events if ev.get("task")})
 
     meta = TraceMeta(
         source="otel",

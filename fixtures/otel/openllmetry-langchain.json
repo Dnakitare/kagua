@@ -1,0 +1,854 @@
+{
+ "resourceSpans": [
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "telemetry.sdk.language",
+      "value": {
+       "stringValue": "python"
+      }
+     },
+     {
+      "key": "telemetry.sdk.name",
+      "value": {
+       "stringValue": "opentelemetry"
+      }
+     },
+     {
+      "key": "telemetry.sdk.version",
+      "value": {
+       "stringValue": "1.43.0"
+      }
+     },
+     {
+      "key": "service.instance.id",
+      "value": {
+       "stringValue": "b769528f-12d9-44fb-90b1-fd03a44111ff"
+      }
+     },
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "workorder-agents"
+      }
+     }
+    ]
+   },
+   "scopeSpans": [
+    {
+     "scope": {
+      "name": "opentelemetry.instrumentation.langchain",
+      "version": "0.62.1"
+     },
+     "spans": [
+      {
+       "traceId": "i6E3Nn8yu2N/ULdUMuaZww==",
+       "spanId": "mia/0IqbNA0=",
+       "name": "FakeMessagesListChatModel.chat",
+       "kind": "SPAN_KIND_CLIENT",
+       "startTimeUnixNano": "1783101782649213000",
+       "endTimeUnixNano": "1783101782649542000",
+       "attributes": [
+        {
+         "key": "traceloop.workflow.name",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.entity.path",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_provider",
+         "value": {
+          "stringValue": "fakemessageslistchatmodel"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_model_type",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_integration",
+         "value": {
+          "stringValue": "langchain_chat_model"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.lc_versions",
+         "value": {
+          "stringValue": "{'langchain-core': '1.4.8'}"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "langchain"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "unknown"
+         }
+        },
+        {
+         "key": "gen_ai.response.model",
+         "value": {
+          "stringValue": "unknown"
+         }
+        },
+        {
+         "key": "gen_ai.input.messages",
+         "value": {
+          "stringValue": "[{\"role\": \"user\", \"parts\": [{\"type\": \"text\", \"content\": \"Handle work order WO-442 end to end.\"}]}]"
+         }
+        },
+        {
+         "key": "gen_ai.output.messages",
+         "value": {
+          "stringValue": "[{\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c1\", \"name\": \"workorders_read\", \"arguments\": {\"workorder_id\": \"WO-442\"}}], \"finish_reason\": \"\"}]"
+         }
+        }
+       ],
+       "status": {},
+       "flags": 256
+      },
+      {
+       "traceId": "AoIvgH5fWh4AOg+cUzlJ0g==",
+       "spanId": "lC7F7OBi5Uo=",
+       "name": "execute_tool workorders_read",
+       "kind": "SPAN_KIND_INTERNAL",
+       "startTimeUnixNano": "1783101782649702000",
+       "endTimeUnixNano": "1783101782649890000",
+       "attributes": [
+        {
+         "key": "traceloop.workflow.name",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.entity.path",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.span.kind",
+         "value": {
+          "stringValue": "tool"
+         }
+        },
+        {
+         "key": "traceloop.entity.name",
+         "value": {
+          "stringValue": "workorders_read"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "langchain"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.tool.name",
+         "value": {
+          "stringValue": "workorders_read"
+         }
+        },
+        {
+         "key": "gen_ai.tool.type",
+         "value": {
+          "stringValue": "function"
+         }
+        },
+        {
+         "key": "gen_ai.tool.description",
+         "value": {
+          "stringValue": "Read a work order by id."
+         }
+        },
+        {
+         "key": "traceloop.entity.input",
+         "value": {
+          "stringValue": "{\"input_str\": \"{'workorder_id': 'WO-442'}\", \"tags\": [], \"metadata\": {}, \"inputs\": {\"workorder_id\": \"WO-442\"}, \"kwargs\": {\"color\": \"green\", \"name\": null, \"tool_call_id\": null}}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.arguments",
+         "value": {
+          "stringValue": "{\"input_str\": \"{'workorder_id': 'WO-442'}\", \"tags\": [], \"metadata\": {}, \"inputs\": {\"workorder_id\": \"WO-442\"}, \"kwargs\": {\"color\": \"green\", \"name\": null, \"tool_call_id\": null}}"
+         }
+        },
+        {
+         "key": "gen_ai.task.status",
+         "value": {
+          "stringValue": "success"
+         }
+        },
+        {
+         "key": "traceloop.entity.output",
+         "value": {
+          "stringValue": "{\"output\": \"{\\\"id\\\": \\\"WO-442\\\", \\\"issue\\\": \\\"HVAC failure\\\", \\\"site\\\": \\\"Site 12\\\"}\", \"kwargs\": {\"tags\": [], \"color\": \"green\", \"name\": \"workorders_read\"}}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.result",
+         "value": {
+          "stringValue": "{\"output\": \"{\\\"id\\\": \\\"WO-442\\\", \\\"issue\\\": \\\"HVAC failure\\\", \\\"site\\\": \\\"Site 12\\\"}\", \"kwargs\": {\"tags\": [], \"color\": \"green\", \"name\": \"workorders_read\"}}"
+         }
+        }
+       ],
+       "status": {},
+       "flags": 256
+      },
+      {
+       "traceId": "O2ADEGrj7/4E09Z4MZ30sg==",
+       "spanId": "K12gigcMdeQ=",
+       "name": "FakeMessagesListChatModel.chat",
+       "kind": "SPAN_KIND_CLIENT",
+       "startTimeUnixNano": "1783101782649997000",
+       "endTimeUnixNano": "1783101782650136000",
+       "attributes": [
+        {
+         "key": "traceloop.workflow.name",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.entity.path",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_provider",
+         "value": {
+          "stringValue": "fakemessageslistchatmodel"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_model_type",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_integration",
+         "value": {
+          "stringValue": "langchain_chat_model"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.lc_versions",
+         "value": {
+          "stringValue": "{'langchain-core': '1.4.8'}"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "langchain"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "unknown"
+         }
+        },
+        {
+         "key": "gen_ai.response.model",
+         "value": {
+          "stringValue": "unknown"
+         }
+        },
+        {
+         "key": "gen_ai.input.messages",
+         "value": {
+          "stringValue": "[{\"role\": \"user\", \"parts\": [{\"type\": \"text\", \"content\": \"Handle work order WO-442 end to end.\"}]}, {\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c1\", \"name\": \"workorders_read\", \"arguments\": {\"workorder_id\": \"WO-442\"}}]}, {\"role\": \"tool\", \"parts\": [{\"type\": \"tool_call_response\", \"id\": \"c1\", \"response\": \"{\\\"id\\\": \\\"WO-442\\\", \\\"issue\\\": \\\"HVAC failure\\\", \\\"site\\\": \\\"Site 12\\\"}\"}]}]"
+         }
+        },
+        {
+         "key": "gen_ai.output.messages",
+         "value": {
+          "stringValue": "[{\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c2\", \"name\": \"vendors_search\", \"arguments\": {\"query\": \"HVAC repair site 12\"}}], \"finish_reason\": \"\"}]"
+         }
+        }
+       ],
+       "status": {},
+       "flags": 256
+      },
+      {
+       "traceId": "ik1hZOjceLZoMU1MdULG1w==",
+       "spanId": "DUIucPyZXtI=",
+       "name": "execute_tool vendors_search",
+       "kind": "SPAN_KIND_INTERNAL",
+       "startTimeUnixNano": "1783101782650223000",
+       "endTimeUnixNano": "1783101782650359000",
+       "attributes": [
+        {
+         "key": "traceloop.workflow.name",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.entity.path",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.span.kind",
+         "value": {
+          "stringValue": "tool"
+         }
+        },
+        {
+         "key": "traceloop.entity.name",
+         "value": {
+          "stringValue": "vendors_search"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "langchain"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.tool.name",
+         "value": {
+          "stringValue": "vendors_search"
+         }
+        },
+        {
+         "key": "gen_ai.tool.type",
+         "value": {
+          "stringValue": "function"
+         }
+        },
+        {
+         "key": "gen_ai.tool.description",
+         "value": {
+          "stringValue": "Search vendors by capability."
+         }
+        },
+        {
+         "key": "traceloop.entity.input",
+         "value": {
+          "stringValue": "{\"input_str\": \"{'query': 'HVAC repair site 12'}\", \"tags\": [], \"metadata\": {}, \"inputs\": {\"query\": \"HVAC repair site 12\"}, \"kwargs\": {\"color\": \"green\", \"name\": null, \"tool_call_id\": null}}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.arguments",
+         "value": {
+          "stringValue": "{\"input_str\": \"{'query': 'HVAC repair site 12'}\", \"tags\": [], \"metadata\": {}, \"inputs\": {\"query\": \"HVAC repair site 12\"}, \"kwargs\": {\"color\": \"green\", \"name\": null, \"tool_call_id\": null}}"
+         }
+        },
+        {
+         "key": "gen_ai.task.status",
+         "value": {
+          "stringValue": "success"
+         }
+        },
+        {
+         "key": "traceloop.entity.output",
+         "value": {
+          "stringValue": "{\"output\": \"[\\\"acme-hvac\\\", \\\"coolflow-mechanical\\\"]\", \"kwargs\": {\"tags\": [], \"color\": \"green\", \"name\": \"vendors_search\"}}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.result",
+         "value": {
+          "stringValue": "{\"output\": \"[\\\"acme-hvac\\\", \\\"coolflow-mechanical\\\"]\", \"kwargs\": {\"tags\": [], \"color\": \"green\", \"name\": \"vendors_search\"}}"
+         }
+        }
+       ],
+       "status": {},
+       "flags": 256
+      },
+      {
+       "traceId": "BlJ+3OWEFL4U27d9LBJMLA==",
+       "spanId": "OTn2b3CNqcA=",
+       "name": "FakeMessagesListChatModel.chat",
+       "kind": "SPAN_KIND_CLIENT",
+       "startTimeUnixNano": "1783101782650436000",
+       "endTimeUnixNano": "1783101782650542000",
+       "attributes": [
+        {
+         "key": "traceloop.workflow.name",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.entity.path",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_provider",
+         "value": {
+          "stringValue": "fakemessageslistchatmodel"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_model_type",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_integration",
+         "value": {
+          "stringValue": "langchain_chat_model"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.lc_versions",
+         "value": {
+          "stringValue": "{'langchain-core': '1.4.8'}"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "langchain"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "unknown"
+         }
+        },
+        {
+         "key": "gen_ai.response.model",
+         "value": {
+          "stringValue": "unknown"
+         }
+        },
+        {
+         "key": "gen_ai.input.messages",
+         "value": {
+          "stringValue": "[{\"role\": \"user\", \"parts\": [{\"type\": \"text\", \"content\": \"Handle work order WO-442 end to end.\"}]}, {\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c1\", \"name\": \"workorders_read\", \"arguments\": {\"workorder_id\": \"WO-442\"}}]}, {\"role\": \"tool\", \"parts\": [{\"type\": \"tool_call_response\", \"id\": \"c1\", \"response\": \"{\\\"id\\\": \\\"WO-442\\\", \\\"issue\\\": \\\"HVAC failure\\\", \\\"site\\\": \\\"Site 12\\\"}\"}]}, {\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c2\", \"name\": \"vendors_search\", \"arguments\": {\"query\": \"HVAC repair site 12\"}}]}, {\"role\": \"tool\", \"parts\": [{\"type\": \"tool_call_response\", \"id\": \"c2\", \"response\": \"[\\\"acme-hvac\\\", \\\"coolflow-mechanical\\\"]\"}]}]"
+         }
+        },
+        {
+         "key": "gen_ai.output.messages",
+         "value": {
+          "stringValue": "[{\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c3\", \"name\": \"vendors_get_quote\", \"arguments\": {\"vendor\": \"acme-hvac\", \"workorder_id\": \"WO-442\"}}], \"finish_reason\": \"\"}]"
+         }
+        }
+       ],
+       "status": {},
+       "flags": 256
+      },
+      {
+       "traceId": "BvZyzgYp+Yi79b0+l96Ghg==",
+       "spanId": "2+v/z5Uoq8Q=",
+       "name": "execute_tool vendors_get_quote",
+       "kind": "SPAN_KIND_INTERNAL",
+       "startTimeUnixNano": "1783101782650620000",
+       "endTimeUnixNano": "1783101782650751000",
+       "attributes": [
+        {
+         "key": "traceloop.workflow.name",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.entity.path",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.span.kind",
+         "value": {
+          "stringValue": "tool"
+         }
+        },
+        {
+         "key": "traceloop.entity.name",
+         "value": {
+          "stringValue": "vendors_get_quote"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "langchain"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.tool.name",
+         "value": {
+          "stringValue": "vendors_get_quote"
+         }
+        },
+        {
+         "key": "gen_ai.tool.type",
+         "value": {
+          "stringValue": "function"
+         }
+        },
+        {
+         "key": "gen_ai.tool.description",
+         "value": {
+          "stringValue": "Request a quote from a vendor for a work order."
+         }
+        },
+        {
+         "key": "traceloop.entity.input",
+         "value": {
+          "stringValue": "{\"input_str\": \"{'vendor': 'acme-hvac', 'workorder_id': 'WO-442'}\", \"tags\": [], \"metadata\": {}, \"inputs\": {\"vendor\": \"acme-hvac\", \"workorder_id\": \"WO-442\"}, \"kwargs\": {\"color\": \"green\", \"name\": null, \"tool_call_id\": null}}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.arguments",
+         "value": {
+          "stringValue": "{\"input_str\": \"{'vendor': 'acme-hvac', 'workorder_id': 'WO-442'}\", \"tags\": [], \"metadata\": {}, \"inputs\": {\"vendor\": \"acme-hvac\", \"workorder_id\": \"WO-442\"}, \"kwargs\": {\"color\": \"green\", \"name\": null, \"tool_call_id\": null}}"
+         }
+        },
+        {
+         "key": "gen_ai.task.status",
+         "value": {
+          "stringValue": "success"
+         }
+        },
+        {
+         "key": "traceloop.entity.output",
+         "value": {
+          "stringValue": "{\"output\": \"{\\\"vendor\\\": \\\"acme-hvac\\\", \\\"amount_usd\\\": 8400}\", \"kwargs\": {\"tags\": [], \"color\": \"green\", \"name\": \"vendors_get_quote\"}}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.result",
+         "value": {
+          "stringValue": "{\"output\": \"{\\\"vendor\\\": \\\"acme-hvac\\\", \\\"amount_usd\\\": 8400}\", \"kwargs\": {\"tags\": [], \"color\": \"green\", \"name\": \"vendors_get_quote\"}}"
+         }
+        }
+       ],
+       "status": {},
+       "flags": 256
+      },
+      {
+       "traceId": "3KtJCtOCSsFHeziM6WVHSQ==",
+       "spanId": "tQqAxJTCMFI=",
+       "name": "FakeMessagesListChatModel.chat",
+       "kind": "SPAN_KIND_CLIENT",
+       "startTimeUnixNano": "1783101782650822000",
+       "endTimeUnixNano": "1783101782650924000",
+       "attributes": [
+        {
+         "key": "traceloop.workflow.name",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.entity.path",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_provider",
+         "value": {
+          "stringValue": "fakemessageslistchatmodel"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_model_type",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_integration",
+         "value": {
+          "stringValue": "langchain_chat_model"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.lc_versions",
+         "value": {
+          "stringValue": "{'langchain-core': '1.4.8'}"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "langchain"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "unknown"
+         }
+        },
+        {
+         "key": "gen_ai.response.model",
+         "value": {
+          "stringValue": "unknown"
+         }
+        },
+        {
+         "key": "gen_ai.input.messages",
+         "value": {
+          "stringValue": "[{\"role\": \"user\", \"parts\": [{\"type\": \"text\", \"content\": \"Handle work order WO-442 end to end.\"}]}, {\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c1\", \"name\": \"workorders_read\", \"arguments\": {\"workorder_id\": \"WO-442\"}}]}, {\"role\": \"tool\", \"parts\": [{\"type\": \"tool_call_response\", \"id\": \"c1\", \"response\": \"{\\\"id\\\": \\\"WO-442\\\", \\\"issue\\\": \\\"HVAC failure\\\", \\\"site\\\": \\\"Site 12\\\"}\"}]}, {\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c2\", \"name\": \"vendors_search\", \"arguments\": {\"query\": \"HVAC repair site 12\"}}]}, {\"role\": \"tool\", \"parts\": [{\"type\": \"tool_call_response\", \"id\": \"c2\", \"response\": \"[\\\"acme-hvac\\\", \\\"coolflow-mechanical\\\"]\"}]}, {\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c3\", \"name\": \"vendors_get_quote\", \"arguments\": {\"vendor\": \"acme-hvac\", \"workorder_id\": \"WO-442\"}}]}, {\"role\": \"tool\", \"parts\": [{\"type\": \"tool_call_response\", \"id\": \"c3\", \"response\": \"{\\\"vendor\\\": \\\"acme-hvac\\\", \\\"amount_usd\\\": 8400}\"}]}]"
+         }
+        },
+        {
+         "key": "gen_ai.output.messages",
+         "value": {
+          "stringValue": "[{\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c4\", \"name\": \"payments_approve\", \"arguments\": {\"vendor\": \"acme-hvac\", \"amount_usd\": 8400}}], \"finish_reason\": \"\"}]"
+         }
+        }
+       ],
+       "status": {},
+       "flags": 256
+      },
+      {
+       "traceId": "YKcAVxNB1On0RaSJaOSfsA==",
+       "spanId": "1JWXFAPP/RQ=",
+       "name": "execute_tool payments_approve",
+       "kind": "SPAN_KIND_INTERNAL",
+       "startTimeUnixNano": "1783101782650998000",
+       "endTimeUnixNano": "1783101782651121000",
+       "attributes": [
+        {
+         "key": "traceloop.workflow.name",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.entity.path",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.span.kind",
+         "value": {
+          "stringValue": "tool"
+         }
+        },
+        {
+         "key": "traceloop.entity.name",
+         "value": {
+          "stringValue": "payments_approve"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "langchain"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.tool.name",
+         "value": {
+          "stringValue": "payments_approve"
+         }
+        },
+        {
+         "key": "gen_ai.tool.type",
+         "value": {
+          "stringValue": "function"
+         }
+        },
+        {
+         "key": "gen_ai.tool.description",
+         "value": {
+          "stringValue": "Approve a payment to a vendor."
+         }
+        },
+        {
+         "key": "traceloop.entity.input",
+         "value": {
+          "stringValue": "{\"input_str\": \"{'vendor': 'acme-hvac', 'amount_usd': 8400}\", \"tags\": [], \"metadata\": {}, \"inputs\": {\"vendor\": \"acme-hvac\", \"amount_usd\": 8400}, \"kwargs\": {\"color\": \"green\", \"name\": null, \"tool_call_id\": null}}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.arguments",
+         "value": {
+          "stringValue": "{\"input_str\": \"{'vendor': 'acme-hvac', 'amount_usd': 8400}\", \"tags\": [], \"metadata\": {}, \"inputs\": {\"vendor\": \"acme-hvac\", \"amount_usd\": 8400}, \"kwargs\": {\"color\": \"green\", \"name\": null, \"tool_call_id\": null}}"
+         }
+        },
+        {
+         "key": "gen_ai.task.status",
+         "value": {
+          "stringValue": "success"
+         }
+        },
+        {
+         "key": "traceloop.entity.output",
+         "value": {
+          "stringValue": "{\"output\": \"{\\\"status\\\": \\\"approved\\\", \\\"vendor\\\": \\\"acme-hvac\\\", \\\"amount_usd\\\": 8400}\", \"kwargs\": {\"tags\": [], \"color\": \"green\", \"name\": \"payments_approve\"}}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.result",
+         "value": {
+          "stringValue": "{\"output\": \"{\\\"status\\\": \\\"approved\\\", \\\"vendor\\\": \\\"acme-hvac\\\", \\\"amount_usd\\\": 8400}\", \"kwargs\": {\"tags\": [], \"color\": \"green\", \"name\": \"payments_approve\"}}"
+         }
+        }
+       ],
+       "status": {},
+       "flags": 256
+      },
+      {
+       "traceId": "/RU/VaXRg3izeeG3EvFS6A==",
+       "spanId": "zlIyu4KhoU4=",
+       "name": "FakeMessagesListChatModel.chat",
+       "kind": "SPAN_KIND_CLIENT",
+       "startTimeUnixNano": "1783101782651190000",
+       "endTimeUnixNano": "1783101782651307000",
+       "attributes": [
+        {
+         "key": "traceloop.workflow.name",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.entity.path",
+         "value": {
+          "stringValue": ""
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_provider",
+         "value": {
+          "stringValue": "fakemessageslistchatmodel"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_model_type",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.ls_integration",
+         "value": {
+          "stringValue": "langchain_chat_model"
+         }
+        },
+        {
+         "key": "traceloop.association.properties.lc_versions",
+         "value": {
+          "stringValue": "{'langchain-core': '1.4.8'}"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "langchain"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "unknown"
+         }
+        },
+        {
+         "key": "gen_ai.response.model",
+         "value": {
+          "stringValue": "unknown"
+         }
+        },
+        {
+         "key": "gen_ai.input.messages",
+         "value": {
+          "stringValue": "[{\"role\": \"user\", \"parts\": [{\"type\": \"text\", \"content\": \"Handle work order WO-442 end to end.\"}]}, {\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c1\", \"name\": \"workorders_read\", \"arguments\": {\"workorder_id\": \"WO-442\"}}]}, {\"role\": \"tool\", \"parts\": [{\"type\": \"tool_call_response\", \"id\": \"c1\", \"response\": \"{\\\"id\\\": \\\"WO-442\\\", \\\"issue\\\": \\\"HVAC failure\\\", \\\"site\\\": \\\"Site 12\\\"}\"}]}, {\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c2\", \"name\": \"vendors_search\", \"arguments\": {\"query\": \"HVAC repair site 12\"}}]}, {\"role\": \"tool\", \"parts\": [{\"type\": \"tool_call_response\", \"id\": \"c2\", \"response\": \"[\\\"acme-hvac\\\", \\\"coolflow-mechanical\\\"]\"}]}, {\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c3\", \"name\": \"vendors_get_quote\", \"arguments\": {\"vendor\": \"acme-hvac\", \"workorder_id\": \"WO-442\"}}]}, {\"role\": \"tool\", \"parts\": [{\"type\": \"tool_call_response\", \"id\": \"c3\", \"response\": \"{\\\"vendor\\\": \\\"acme-hvac\\\", \\\"amount_usd\\\": 8400}\"}]}, {\"role\": \"assistant\", \"parts\": [{\"type\": \"tool_call\", \"id\": \"c4\", \"name\": \"payments_approve\", \"arguments\": {\"vendor\": \"acme-hvac\", \"amount_usd\": 8400}}]}, {\"role\": \"tool\", \"parts\": [{\"type\": \"tool_call_response\", \"id\": \"c4\", \"response\": \"{\\\"status\\\": \\\"approved\\\", \\\"vendor\\\": \\\"acme-hvac\\\", \\\"amount_usd\\\": 8400}\"}]}]"
+         }
+        },
+        {
+         "key": "gen_ai.output.messages",
+         "value": {
+          "stringValue": "[{\"role\": \"assistant\", \"parts\": [{\"type\": \"text\", \"content\": \"WO-442 handled: acme-hvac approved for $8,400.\"}], \"finish_reason\": \"\"}]"
+         }
+        }
+       ],
+       "status": {},
+       "flags": 256
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

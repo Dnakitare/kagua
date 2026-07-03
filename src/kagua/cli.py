@@ -39,7 +39,7 @@ def cmd_ingest(args: argparse.Namespace) -> int:
     from .ingest import otel
 
     try:
-        report = otel.ingest(args.input, args.out)
+        report = otel.ingest(args.input, args.out, task_override=args.task)
     except (OSError, json.JSONDecodeError, KeyError) as exc:
         return _fail(f"could not ingest {args.input}: {exc}")
     print(f"wrote {args.out}")
@@ -129,6 +129,13 @@ def main(argv: list[str] | None = None) -> int:
     p_ingest.add_argument("input", help="input file or directory")
     p_ingest.add_argument("--adapter", required=True, choices=("otel",))
     p_ingest.add_argument("--out", required=True, help="output JSONL path")
+    p_ingest.add_argument(
+        "--task",
+        default=None,
+        metavar="ID",
+        help="force all events into one task id (for exports whose spans share no"
+        " root span); the loss report will note the grouping is asserted, not observed",
+    )
     p_ingest.set_defaults(fn=cmd_ingest)
 
     args = parser.parse_args(argv)

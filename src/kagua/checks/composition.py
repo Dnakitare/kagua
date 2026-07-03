@@ -38,15 +38,27 @@ def check(trace: Trace, env: Envelope) -> tuple[list[Finding], list[Invariant]]:
             matched = _match_sequence(trace, sorted(calls, key=lambda e: e.ts), sequence)
             if matched is None:
                 continue
+            ordering = _ordering_quality(trace, matched)
+            message = (
+                f"forbidden sequence [{' -> '.join(sequence)}] completed within {task};"
+                " every call was individually authorized"
+            )
+            if "concurrent-within-tolerance" in ordering:
+                message += (
+                    "; order between some steps is within clock tolerance"
+                    " (co-occurrence in the task is proven, exact order is not)"
+                )
             findings.append(
                 Finding(
                     FAMILY,
                     "forbidden_composition",
-                    f"forbidden sequence [{' -> '.join(sequence)}] completed within {task};"
-                    " every call was individually authorized",
+                    message,
                     task,
                     _witness(trace, task, matched),
-                    details={"sequence_events": [e.event_id for e in matched]},
+                    details={
+                        "sequence_events": [e.event_id for e in matched],
+                        "ordering": ordering,
+                    },
                 )
             )
     return findings, unchecked
@@ -55,7 +67,16 @@ def check(trace: Trace, env: Envelope) -> tuple[list[Finding], list[Invariant]]:
 def _match_sequence(
     trace: Trace, calls: list[Event], sequence: list[str]
 ) -> list[Event] | None:
-    """Greedy earliest match of the pattern sequence under causal order."""
+    """Greedy earliest match, scanning in timestamp order.
+
+    A candidate for the next slot is rejected only when causality contradicts
+    the claimed order (the candidate is a causal ancestor of the previous
+    match). Requiring positive happens-before proof here would let the clock
+    tolerance window suppress true positives: real agent loops fire tool
+    calls milliseconds apart across disjoint traces, and a forbidden pair
+    co-occurring in one task must not pass because clocks can't order it.
+    Causal order still wins wherever it exists.
+    """
     matched: list[Event] = []
     used_logical: set[str] = set()
     for e in calls:
@@ -66,11 +87,24 @@ def _match_sequence(
             continue
         if e.logical_id in used_logical:
             continue  # a retry of an already-matched call is the same action
-        if matched and not trace.happens_before(matched[-1], e):
-            continue
+        if matched and trace.happens_before(e, matched[-1]):
+            continue  # causally contradicted: candidate provably precedes the previous step
         matched.append(e)
         used_logical.add(e.logical_id)
     return matched if len(matched) == len(sequence) else None
+
+
+def _ordering_quality(trace: Trace, matched: list[Event]) -> list[str]:
+    """Per adjacent pair: how the claimed order is established."""
+    quality: list[str] = []
+    for a, b in zip(matched, matched[1:]):
+        if trace.is_ancestor(a, b):
+            quality.append("causal")
+        elif (b.ts - a.ts).total_seconds() > trace.tolerance:
+            quality.append("clock")
+        else:
+            quality.append("concurrent-within-tolerance")
+    return quality
 
 
 def _witness(trace: Trace, task: str, matched: list[Event]) -> list[str]:

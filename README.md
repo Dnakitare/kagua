@@ -4,7 +4,7 @@
 
 Kagua replays multi-agent traces against a declared authority envelope and fails the build when the *composition* of actions exceeds what any principal authorized, even though every individual call passed its own check.
 
-![kagua check failing the work-order demo on a Composition violation](docs/demo.svg)
+![kagua check failing the work-order demo on a Composition violation](https://raw.githubusercontent.com/Dnakitare/kagua/main/docs/demo.svg)
 
 <details>
 <summary>Same output as text</summary>
@@ -91,22 +91,29 @@ A pass on partial input is worse than no tool if it reads as a clean bill. Kagua
 kagua ingest ./otel-export.json --adapter otel --out trace.jsonl
 ```
 
-The OTel GenAI adapter converts tool-execution spans into canonical events and tells you exactly what it couldn't recover:
+The OTel GenAI adapter converts tool-execution spans into canonical events and tells you exactly what it couldn't recover. This is real output over a real OpenLLMetry export (a LangChain tool loop instrumented with `opentelemetry-instrumentation-langchain`; the export is checked in at `fixtures/otel/openllmetry-langchain.json`, no hand-authored spans):
 
 ```
-ingested 7 spans -> 4 events
-  skipped 2: model/agent invocation spans (no authority semantics)
-  skipped 1: non-GenAI spans
-recovered: 1/3 warrants, 1 delegation records, 1/3 args digests
+ingested 9 spans -> 4 events
+  skipped 5: model/agent invocation spans (no authority semantics)
+recovered: 0/4 warrants, 0 delegation records, 4/4 args digests (4 derived here from plaintext args, not attested by source)
 
 this input cannot support:
-  2 of 3 tool calls carry no warrant; those events are unverifiable for Lifetime/Principal
+  Principal   - no delegation records; warrant chains to a root principal cannot be verified
+  Lifetime    - no warrants or task boundaries; validity windows unknowable
+  Scope       - degraded to a point check of each call against the envelope's per-agent declarations
   Provenance  - not implemented until v0.2 (Muhuri-signed hops)
+
+actor identity: 4 of 4 events have no per-agent identity (no gen_ai.agent.name); actor fell back to the service.name resource attribute, which cannot distinguish agents sharing a process.
+
+task grouping: 4 events landed in 4 disjoint traces with no shared root span. Within-task checks (composition, lifetime) cannot correlate any of them. If these belong to one logical task, wrap the run in a workflow/root span or re-ingest with --task <id>.
 
 verdicts over this trace will be QUALIFIED: findings are real, but a pass
 covers only what this export saw. OTel sampling drops spans by design;
 a sampled trace cannot prove the absence of a violation.
 ```
+
+Even at this fidelity, the composition check works: group the calls into one task (`--task`, or a root span in your instrumentation) and the quote-then-approve pair in that export fails `kagua check` with a witness. When ordering rests on clocks instead of causal links, the finding says so rather than overclaiming.
 
 Plain OTel GenAI data is authority-blind. If your instrumentation emits the `kagua.*` span attributes (`kagua.warrant_id`, `kagua.delegation.subject`, `kagua.args_digest`, ...), the adapter recovers full authority semantics; Datadog ignores them and nothing breaks.
 
